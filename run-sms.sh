@@ -1,2 +1,2 @@
 #! /bin/sh
-/usr/local/bin/smsd -t -nMAINPROCESS -c/Projekt/nisse/scream-tower-raspi/smsd.conf
+/usr/sbin/smsd -t -nMAINPROCESS -c/home/pi/screamer/smsd.conf
