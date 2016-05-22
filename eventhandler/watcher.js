@@ -35,7 +35,7 @@ fs.readdir(incomingDirectory, (err, directoryFiles) => {
 
 	console.log('start watching incoming dir')
 	chokidar.watch(incomingDirectory, {persistent: true, usePolling: false, awaitWriteFinish: true})
-			.on('add', (path)=>{
+			.on('add', (filename)=>{
 				console.log('file touched in incoming dir', filename);
 				if (!filename.startsWith('GSM1')) return;
 				var path = incomingDirectory + '/' + filename;
