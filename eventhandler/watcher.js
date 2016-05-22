@@ -33,15 +33,24 @@ fs.readdir(incomingDirectory, (err, directoryFiles) => {
 		});
 
 	console.log('start watching incoming dir')
-	fs.watch(incomingDirectory, {
-		encoding: 'utf-8',
-		persistent: true
-	}, (event, filename) => {
-		console.log('file touched in incoming dir', filename);
-		if (!filename.startsWith('GSM1')) return;
-		var path = incomingDirectory + '/' + filename;
-		tryToAddFile(path);
-	});
+	chokidar.watch(incomingDirectory, {persistent: true, usePolling: false, awaitWriteFinish: true})
+			.on('add', (path)=>{
+				console.log('file touched in incoming dir', filename);
+				if (!filename.startsWith('GSM1')) return;
+				var path = incomingDirectory + '/' + filename;
+				tryToAddFile(path);
+			})
+
+	//console.log('start watching incoming dir')
+	//fs.watch(incomingDirectory, {
+	//	encoding: 'utf-8',
+	//	persistent: true
+	//}, (event, filename) => {
+	//	console.log('file touched in incoming dir', filename);
+	//	if (!filename.startsWith('GSM1')) return;
+	//	var path = incomingDirectory + '/' + filename;
+	//	tryToAddFile(path);
+	//});
 
 	writeStarted();
 });

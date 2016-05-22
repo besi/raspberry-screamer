@@ -11,6 +11,7 @@
   "dependencies": {
     "args": "^1.0.2",
     "async": "^2.0.0-rc.5",
+    "chokidar": "^1.5.1",
     "forever": "^0.15.1",
     "lame": "^1.2.3",
     "md5": "^2.1.0",
