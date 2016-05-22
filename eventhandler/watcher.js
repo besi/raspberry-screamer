@@ -22,13 +22,13 @@ fs.readdir(incomingDirectory, (err, directoryFiles) => {
 	if (err) throw err;
 
 	directoryFiles
-	.filter((file)=>{
-		return file.startsWith('GSM1');
-	})
-	.forEach((filename)=>{
-		var path = incomingDirectory + '/' + filename;
-		tryToAddFile(path);
-	});
+		.filter((file) => {
+			return file.startsWith('GSM1');
+		})
+		.forEach((filename) => {
+			var path = incomingDirectory + '/' + filename;
+			tryToAddFile(path);
+		});
 
 	fs.watch(incomingDirectory, {
 		encoding: 'utf-8',
@@ -44,13 +44,18 @@ fs.readdir(incomingDirectory, (err, directoryFiles) => {
 
 
 
-function tryToAddFile(path){
-	fs.access(path, fs.F_OK | fs.R_OK, (err)=>{
-		if (err){
+function tryToAddFile(path) {
+	fs.access(path, fs.F_OK | fs.R_OK, (err) => {
+		if (err) {
 			// it was deleted or we cannot read it
-		}else{
-			console.log('add file', path);
-			files.push(path);
+			console.log('could not read file. skip', path, err);
+		} else {
+			if (files.indexOf(path) == -1){
+				console.log('add file', path);
+				files.push(path);
+			}else{
+				console.log('file was in list already. skip', path);
+			}
 		}
 	});
 }
@@ -70,13 +75,13 @@ function screamFiles() {
 	var incomingFileName = files.pop();
 
 	console.log('read file', incomingFileName);
-	console.log('remove incoming');
-	removeIncomingMessage(incomingFileName, (err) => {
+	fs.readFile(incomingFileName, {
+		encoding: 'utf-8'
+	}, (err, content) => {
 		if (err) throw err;
 
-		fs.readFile(incomingFileName, {
-			encoding: 'utf-8'
-		}, (err, content) => {
+		console.log('remove incoming');
+		removeIncomingMessage(incomingFileName, (err) => {
 			if (err) throw err;
 
 			console.log('parse message', content);
@@ -130,7 +135,7 @@ function screamFiles() {
 	});
 }
 
-function removeIncomingMessage(incomingFile, cb){
+function removeIncomingMessage(incomingFile, cb) {
 	fs.unlink(incomingFile, cb);
 }
 
@@ -147,22 +152,24 @@ function writePlayedFile(message, cb) {
 	fs.writeFile(path, string, cb);
 }
 
-function writeStarted(){
-	fs.readFile(statFile, {encoding:'utf-8'}, (err, content) => {
+function writeStarted() {
+	fs.readFile(statFile, {
+		encoding: 'utf-8'
+	}, (err, content) => {
 		if (err) throw err;
 		var data = JSON.parse(content);
 		data['started'] = (data['started'] || 0) + 1;
 		var string = JSON.stringify(data);
-		fs.writeFile(statFile, string, (err)=>{
+		fs.writeFile(statFile, string, (err) => {
 			if (err) throw err;
 			console.log('write started');
 		});
 	});
 }
 
-function sendStatsMessage(message, cb){
+function sendStatsMessage(message, cb) {
 	console.log('stats requested from ' + message.from);
-	getStats((err, stats)=>{
+	getStats((err, stats) => {
 		console.log('stats', stats, err);
 		if (err) return cb(err);
 		var path = outgoingDirectory + '/' + Math.floor(Math.random() * 10000000000) + '.stat';
@@ -174,7 +181,7 @@ function sendStatsMessage(message, cb){
 		text += 'uniquesenders: ' + stats.uniquesenders + '\n';
 		text += 'lastmessage: ' + stats.lastmessage + '\n';
 		text += 'started: ' + stats.started + '\n';
-		fs.writeFile(path, text, (err)=>{
+		fs.writeFile(path, text, (err) => {
 			cb(err);
 		});
 	});
@@ -187,12 +194,12 @@ function sendConfirmationMessage(message, cb) {
 	text += 'To: ' + message.from + '\n';
 	text += '\n'
 	text += emoji.get(':loudspeaker:');
-	fs.writeFile(path, text, (err)=>{
+	fs.writeFile(path, text, (err) => {
 		cb(err);
 	});
 }
 
-function sendOperatorMessage(message, cb){
+function sendOperatorMessage(message, cb) {
 	console.log('operator message');
 	var path = outgoingDirectory + '/' + Math.floor(Math.random() * 10000000000) + '.operator';
 	var text = '';
@@ -200,55 +207,57 @@ function sendOperatorMessage(message, cb){
 	text += 'To: 46707511190\n';
 	text += '\n'
 	text += message.body + '\n';
-	fs.writeFile(path, text, (err)=>{
+	fs.writeFile(path, text, (err) => {
 		cb(err);
 	});
 }
 
-function getStats(cb){
-	fs.readdir(playedDirectory, (err, files)=>{
+function getStats(cb) {
+	fs.readdir(playedDirectory, (err, files) => {
 		if (err) throw err;
 
-		files = files.map((file)=>{
+		files = files.map((file) => {
 			return playedDirectory + '/' + file;
 		});
 
-		async.map(files, (file, done)=>{
-			fs.readFile(file, (err, content)=>{
+		async.map(files, (file, done) => {
+			fs.readFile(file, (err, content) => {
 				if (err) return done(err);
 				var data = JSON.parse(content);
 				done(null, data);
 			});
-		}, (err, messages)=>{
+		}, (err, messages) => {
 			if (err) return cb(err);
 
 			var numberOfMessages = messages.length;
 
-			var uniqueSenders = messages.map((message)=>{
-				return message.from
-			})
-			.filter( (value, index, self) => { 
-				return self.indexOf(value) === index
-			})
-			.length;
+			var uniqueSenders = messages.map((message) => {
+					return message.from
+				})
+				.filter((value, index, self) => {
+					return self.indexOf(value) === index
+				})
+				.length;
 
-			var lastMessageEpoch = messages.map((message)=>{
+			var lastMessageEpoch = messages.map((message) => {
 				return new Date(Date.parse(message.played)).getTime();
-			}).reduce((newest, date)=>{
+			}).reduce((newest, date) => {
 				return newest > date ? newest : date;
 			}, 0);
 
 			var lestMessageTimestamp = new Date(lastMessageEpoch).toISOString();
 
-			fs.readFile(statFile, {encoding: 'utf-8'}, (err, content)=>{
+			fs.readFile(statFile, {
+				encoding: 'utf-8'
+			}, (err, content) => {
 				var startStats = JSON.parse(content);
 
 				var stats = {
-								messages: numberOfMessages,
-								uniquesenders: uniqueSenders,
-								lastmessage: lestMessageTimestamp,
-								started: startStats['started']
-							};
+					messages: numberOfMessages,
+					uniquesenders: uniqueSenders,
+					lastmessage: lestMessageTimestamp,
+					started: startStats['started']
+				};
 				cb(null, stats);
 			});
 		});
@@ -287,7 +296,7 @@ function parseMessage(message, cb) {
 
 function playLetters(letters, cb) {
 
-	var letters = md5(letters).substr(0,6);
+	var letters = md5(letters).substr(0, 6);
 
 	getFiles(letters, (err, files) => {
 		var totalDelay = files.map((file) => {
