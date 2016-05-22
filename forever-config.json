@@ -1,0 +1,22 @@
+[
+  {
+    "uid": "watcher",
+    "append": true,
+    "watch": false,
+    "sourceDir": "./eventhandler",
+    "workingDir": "./eventhandler",
+    "command": "node",
+    "script": "watcher.js",
+    "path": "./"
+  },
+  {
+    "uid": "smsd",
+    "append": true,
+    "watch": false,
+    "sourceDir": "./",
+    "workingDir": "./",
+    "command": "bash",
+    "script": "./run-sms.sh",
+    "path": "./"
+  }
+]

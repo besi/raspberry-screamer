@@ -5,11 +5,14 @@ var player = require('play-sound')(opts = {});
 var mp3Duration = require('mp3-duration');
 var async = require('async');
 var md5 = require('md5');
+var emoji = require('node-emoji');
 
-var incomingDirectory = '/Projekt/nisse/scream-tower-raspi/incoming';
-var outgoingDirectory = '/Projekt/nisse/scream-tower-raspi/outgoing';
-var playedDirectory = '/Projekt/nisse/scream-tower-raspi/played'
-var statFile = '/Projekt/nisse/scream-tower-raspi/stats.json'
+var incomingDirectory = __dirname + '/../incoming';
+var outgoingDirectory = __dirname + '/../outgoing';
+var playedDirectory = __dirname + '/../played'
+var statFile = __dirname + '/../stats.json'
+var audioDirectory = __dirname + '/../audio/';
+var delayMillis = 1000;
 
 var files = [];
 
@@ -24,7 +27,7 @@ fs.readdir(incomingDirectory, (err, directoryFiles) => {
 	})
 	.forEach((filename)=>{
 		var path = incomingDirectory + '/' + filename;
-		//tryToAddFile(path);
+		tryToAddFile(path);
 	});
 
 	fs.watch(incomingDirectory, {
@@ -55,7 +58,7 @@ function tryToAddFile(path){
 function waitAndScream() {
 	if (files.length == 0) {
 		console.log('no files. wait')
-		return setTimeout(waitAndScream, 1000);
+		return setTimeout(waitAndScream, delayMillis);
 	} else {
 		console.log('some files', files.length)
 		screamFiles();
@@ -64,10 +67,10 @@ function waitAndScream() {
 
 function screamFiles() {
 
-	var filename = files.pop();
+	var incomingFileName = files.pop();
 
-	console.log('read file', filename);
-	fs.readFile(filename, {encoding: 'utf-8'},(err, content) => {
+	console.log('read file', incomingFileName);
+	fs.readFile(incomingFileName, {encoding: 'utf-8'},(err, content) => {
 		if (err) throw err;
 		console.log('parse message', content);
 		parseMessage(content, (err, message) => {
@@ -76,7 +79,7 @@ function screamFiles() {
 			if (message.body.toLowerCase() == 'stats'){
 				sendStatsMessage(message, (err)=>{
 					console.log('send stats');
-					setTimeout(waitAndScream, 1000);
+					setTimeout(waitAndScream, delayMillis);
 				});
 				return;
 			}
@@ -84,27 +87,45 @@ function screamFiles() {
 			if (message.from.toLowerCase() == 'telia'){
 				sendOperatorMessage(message, (err)=>{
 					console.log('send operator command');
-					setTimeout(waitAndScream, 1000);
+					setTimeout(waitAndScream, delayMillis);
 				});
 				return;
 			}
 
-			console.log('parsed', message);
-			console.log('play letters', message.body);
+			if (message.body.toLowerCase() == 'crash') {
+				throw "crashing now";
+			}
 
-			playLetters(message.body, (err, delay) => {
+			console.log('parsed', message);
+
+			console.log('remove incoming');
+			removeIncomingMessage(incomingFileName, (err)=>{
+
 				if (err) throw err;
-				//TODO: remove the file from incoming and write it to played
-				//TODO: respond to the sender
-				console.log('write played file');
-				writePlayedFile(message, (err)=>{
+				console.log('play letters', message.body);
+				playLetters(message.body, (err, delay) => {
+
 					if (err) throw err;
-					console.log('wait until done')
-					setTimeout(waitAndScream, delay);
+					console.log('send confirmation');
+					sendConfirmationMessage(message, (err)=>{
+
+						if (err) throw err;
+						console.log('write played file');
+						writePlayedFile(message, (err)=>{
+
+							if (err) throw err;
+							console.log('wait until done')
+							setTimeout(waitAndScream, delay);
+						});
+					});
 				});
 			});
 		});
 	});
+}
+
+function removeIncomingMessage(incomingFile, cb){
+	fs.unlink(incomingFile, cb);
 }
 
 function writePlayedFile(message, cb) {
@@ -150,6 +171,18 @@ function sendStatsMessage(message, cb){
 		fs.writeFile(path, text, (err)=>{
 			cb(err);
 		});
+	});
+}
+
+function sendConfirmationMessage(message, cb) {
+	var path = outgoingDirectory + '/' + Math.floor(Math.random() * 10000000000) + '.confermed';
+	var text = '';
+	text += 'From: Skriktornet\n';
+	text += 'To: ' + message.from + '\n';
+	text += '\n'
+	text += emoji.get(':loudspeaker:');
+	fs.writeFile(path, text, (err)=>{
+		cb(err);
 	});
 }
 
@@ -290,7 +323,7 @@ function getFiles(letters, cb) {
 			}
 		})
 		.map((file) => {
-			return '/Projekt/nisse/scream-tower-raspi/eventhandler/' + file;
+			return audioDirectory + file;
 		});
 
 	async.map(files, (file, done) => {

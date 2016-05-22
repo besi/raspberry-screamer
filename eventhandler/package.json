@@ -11,9 +11,11 @@
   "dependencies": {
     "args": "^1.0.2",
     "async": "^2.0.0-rc.5",
+    "forever": "^0.15.1",
     "lame": "^1.2.3",
     "md5": "^2.1.0",
     "mp3-duration": "^1.0.9",
+    "node-emoji": "^1.3.0",
     "pcm-volume": "^1.0.0",
     "play-sound": "0.0.9",
     "speaker": "^0.3.0"
