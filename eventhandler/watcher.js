@@ -70,48 +70,54 @@ function screamFiles() {
 	var incomingFileName = files.pop();
 
 	console.log('read file', incomingFileName);
-	fs.readFile(incomingFileName, {encoding: 'utf-8'},(err, content) => {
+	console.log('remove incoming');
+	removeIncomingMessage(incomingFileName, (err) => {
 		if (err) throw err;
-		console.log('parse message', content);
-		parseMessage(content, (err, message) => {
+
+		fs.readFile(incomingFileName, {
+			encoding: 'utf-8'
+		}, (err, content) => {
 			if (err) throw err;
 
-			if (message.body.toLowerCase() == 'stats'){
-				sendStatsMessage(message, (err)=>{
-					console.log('send stats');
-					setTimeout(waitAndScream, delayMillis);
-				});
-				return;
-			}
-
-			if (message.from.toLowerCase() == 'telia'){
-				sendOperatorMessage(message, (err)=>{
-					console.log('send operator command');
-					setTimeout(waitAndScream, delayMillis);
-				});
-				return;
-			}
-
-			if (message.body.toLowerCase() == 'crash') {
-				throw "crashing now";
-			}
-
-			console.log('parsed', message);
-
-			console.log('remove incoming');
-			removeIncomingMessage(incomingFileName, (err)=>{
-
+			console.log('parse message', content);
+			parseMessage(content, (err, message) => {
 				if (err) throw err;
+
+				if (message.body.toLowerCase() == 'stats') {
+					console.log('send stats message');
+					sendStatsMessage(message, (err) => {
+						console.log('send stats');
+						setTimeout(waitAndScream, delayMillis);
+					});
+					return;
+				}
+
+				if (message.from.toLowerCase() == 'telia') {
+					console.log('send operator message');
+					sendOperatorMessage(message, (err) => {
+						console.log('send operator command');
+						setTimeout(waitAndScream, delayMillis);
+					});
+					return;
+				}
+
+				if (message.body.toLowerCase() == 'crash') {
+					console.log('crash');
+					throw "crashing now";
+				}
+
+				console.log('parsed', message);
+
 				console.log('play letters', message.body);
 				playLetters(message.body, (err, delay) => {
 
 					if (err) throw err;
 					console.log('send confirmation');
-					sendConfirmationMessage(message, (err)=>{
+					sendConfirmationMessage(message, (err) => {
 
 						if (err) throw err;
 						console.log('write played file');
-						writePlayedFile(message, (err)=>{
+						writePlayedFile(message, (err) => {
 
 							if (err) throw err;
 							console.log('wait until done')
