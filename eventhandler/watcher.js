@@ -200,7 +200,7 @@ function sendConfirmationMessage(message, cb) {
 	text += 'From: Skriktornet\n';
 	text += 'To: ' + message.from + '\n';
 	text += 'Alphabet: Unicode\n';
-	text += 'Length: 2\n';
+	text += 'Length: 1\n';
 	text += '\n'
 	text += emoji.get(':loudspeaker:');
 	fs.writeFile(path, text, (err) => {
