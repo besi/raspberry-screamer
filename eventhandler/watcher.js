@@ -40,18 +40,7 @@ fs.readdir(incomingDirectory, (err, directoryFiles) => {
 				if (!filename.startsWith('GSM1')) return;
 				var path = incomingDirectory + '/' + filename;
 				tryToAddFile(path);
-			})
-
-	//console.log('start watching incoming dir')
-	//fs.watch(incomingDirectory, {
-	//	encoding: 'utf-8',
-	//	persistent: true
-	//}, (event, filename) => {
-	//	console.log('file touched in incoming dir', filename);
-	//	if (!filename.startsWith('GSM1')) return;
-	//	var path = incomingDirectory + '/' + filename;
-	//	tryToAddFile(path);
-	//});
+			});
 
 	writeStarted();
 });
@@ -211,6 +200,7 @@ function sendConfirmationMessage(message, cb) {
 	text += 'From: Skriktornet\n';
 	text += 'To: ' + message.from + '\n';
 	text += 'Alphabet: Unicode\n';
+	text += 'Length: 2\n';
 	text += '\n'
 	text += emoji.get(':loudspeaker:');
 	fs.writeFile(path, text, (err) => {
