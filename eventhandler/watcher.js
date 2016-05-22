@@ -15,8 +15,9 @@ var audioDirectory = __dirname + '/../audio/';
 var delayMillis = 1000;
 
 var files = [];
+var r = md5(''+Math.random());
 
-console.log('prepare');
+console.log('prepare', r);
 fs.readdir(incomingDirectory, (err, directoryFiles) => {
 	if (err) throw err;
 
