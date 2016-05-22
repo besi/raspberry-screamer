@@ -16,8 +16,11 @@ var delayMillis = 1000;
 
 var files = [];
 
+console.log('prepare');
 fs.readdir(incomingDirectory, (err, directoryFiles) => {
 	if (err) throw err;
+
+	console.log('found files in directory: ' + directoryFiles);
 
 	directoryFiles
 		.filter((file) => {
@@ -28,10 +31,12 @@ fs.readdir(incomingDirectory, (err, directoryFiles) => {
 			tryToAddFile(path);
 		});
 
+	console.log('start watching incoming dir')
 	fs.watch(incomingDirectory, {
 		encoding: 'utf-8',
 		persistent: true
 	}, (event, filename) => {
+		console.log('file touched in incoming dir', filename);
 		if (!filename.startsWith('GSM1')) return;
 		var path = incomingDirectory + '/' + filename;
 		tryToAddFile(path);
@@ -40,11 +45,13 @@ fs.readdir(incomingDirectory, (err, directoryFiles) => {
 	writeStarted();
 });
 
+console.log('start screaming');
 waitAndScream();
 
 
 
 function tryToAddFile(path) {
+	console.log('try to add file', path);
 	fs.access(path, fs.F_OK | fs.R_OK, (err) => {
 		if (err) {
 			// it was deleted or we cannot read it
