@@ -16,8 +16,6 @@ var delayMillis = 1000;
 
 var files = [];
 
-waitAndScream();
-
 fs.readdir(incomingDirectory, (err, directoryFiles) => {
 	if (err) throw err;
 
@@ -41,6 +39,8 @@ fs.readdir(incomingDirectory, (err, directoryFiles) => {
 
 	writeStarted();
 });
+
+waitAndScream();
 
 
 
@@ -162,7 +162,7 @@ function writeStarted() {
 		var string = JSON.stringify(data);
 		fs.writeFile(statFile, string, (err) => {
 			if (err) throw err;
-			console.log('write started');
+			console.log('updated started');
 		});
 	});
 }
@@ -192,6 +192,7 @@ function sendConfirmationMessage(message, cb) {
 	var text = '';
 	text += 'From: Skriktornet\n';
 	text += 'To: ' + message.from + '\n';
+	text += 'Alphabet: Unicode\n';
 	text += '\n'
 	text += emoji.get(':loudspeaker:');
 	fs.writeFile(path, text, (err) => {
