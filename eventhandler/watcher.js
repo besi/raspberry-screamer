@@ -6,6 +6,7 @@ var mp3Duration = require('mp3-duration');
 var async = require('async');
 var md5 = require('md5');
 var emoji = require('node-emoji');
+var chokidar = require('chokidar');
 
 var incomingDirectory = __dirname + '/../incoming';
 var outgoingDirectory = __dirname + '/../outgoing';
