@@ -199,11 +199,15 @@ function sendConfirmationMessage(message, cb) {
 	var text = '';
 	text += 'From: Skriktornet\n';
 	text += 'To: ' + message.from + '\n';
-	text += 'Alphabet: Unicode\n';
+	text += 'Alphabet: UCS\n';
 	text += 'Length: 1\n';
-	text += '\n'
-	text += emoji.get(':loudspeaker:');
-	fs.writeFile(path, text, (err) => {
+	text += '\n';
+
+	var headerBuffer = Buffer.from(text, 'utf-8');
+	var messageBuffer = Buffer.from('📢', 'ucs2');
+	var totalMessage = Buffer.concat([headerBuffer, messageBuffer]);
+
+	fs.writeFile(path, totalMessage, (err) => {
 		cb(err);
 	});
 }
