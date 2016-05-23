@@ -203,7 +203,7 @@ function sendConfirmationMessage(message, cb) {
 	text += 'Length: 1\n';
 	text += '\n';
 
-	var headerBuffer = Buffer.from(text, 'utf-8');
+	var headerBuffer = Buffer.from(text, 'utf8');
 	var messageBuffer = Buffer.from('📢', 'ucs2');
 	var totalMessage = Buffer.concat([headerBuffer, messageBuffer]);
 
