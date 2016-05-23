@@ -200,11 +200,12 @@ function sendConfirmationMessage(message, cb) {
 	text += 'From: Skriktornet\n';
 	text += 'To: ' + message.from + '\n';
 	text += 'Alphabet: UCS\n';
-	text += 'Length: 1\n';
+	text += 'Length: 3\n';
 	text += '\n';
 
 	var headerBuffer = Buffer.from(text, 'utf8');
-	var messageBuffer = Buffer.from('📢', 'ucs2');
+	//var messageBuffer = Buffer.from('📢', 'ucs2');
+	var messageBuffer = Buffer.from([0x01,0xF4,0xE2]);
 	var totalMessage = Buffer.concat([headerBuffer, messageBuffer]);
 
 	fs.writeFile(path, totalMessage, (err) => {
