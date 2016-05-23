@@ -204,8 +204,14 @@ function sendConfirmationMessage(message, cb) {
 	text += '\n';
 
 	var headerBuffer = Buffer.from(text, 'utf8');
-	//var messageBuffer = Buffer.from('📢', 'ucs2');
-	var messageBuffer = Buffer.from([0x01,0xF4,0xE2]);
+	//var messageBuffer = Buffer.from([0x01,0xF4,0xE2]);
+	// convert to utf 16 big endian
+	var messageBuffer = Buffer.from('📢', 'ucs2');
+	for (var i = 0; i < messageBuffer.length; i += 2) {
+        var tmp = messageBuffer[i];
+        messageBuffer[i] = messageBuffer[i+1];
+        messageBuffer[i+1] = tmp;
+    }
 	var totalMessage = Buffer.concat([headerBuffer, messageBuffer]);
 
 	fs.writeFile(path, totalMessage, (err) => {
