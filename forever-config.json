@@ -16,7 +16,7 @@
     "sourceDir": "/home/pi/screamer",
     "workingDir": "/home/pi/screamer",
     "command": "bash",
-    "script": "./run-sms.sh",
+    "script": "run-sms.sh",
     "path": "./"
   }
 ]
