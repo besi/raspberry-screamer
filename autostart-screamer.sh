@@ -4,7 +4,7 @@
 #
 
 ### BEGIN INIT INFO
-# Provides:          ship-it
+# Provides:          screamer
 # Required-Start:    $remote_fs $local_fs $syslog
 # Required-Stop:     $remote_fs $local_fs $syslog
 # Default-Start:     2 3 4 5
