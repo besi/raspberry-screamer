@@ -16,7 +16,7 @@ A Raspberry pi project that plays sounds when someone sends it a SMS.
 
 ####START
 To start the smsd process
-`./run-sms.sh`
+`./start.sh`
 
 ####NOTES
 - watch out with using usb hubs that are powered. You need to make sure it doesn't backpower since you'll fry your PI. I did.
@@ -24,12 +24,12 @@ To start the smsd process
 
 ####TODO
 
-- make polling for messages less frequent
-- Make logging less verbose
-- make both smsd and the watcher run as deamons
-- make smsd and the watcher start on boot and something keeps it alive
-- remove played messages from incoming spool
-- return a confirmation when a message has been received
-- update with proper sounds
-- make the sounds overlap a bit
+- [ ] make polling for messages less frequent
+- [ ] Make logging less verbose
+- [X] make both smsd and the watcher run as deamons
+- [ ] make smsd and the watcher start on boot and something keeps it alive
+- [X] remove played messages from incoming spool
+- [X] return a confirmation when a message has been received
+- [ ] update with proper sounds
+- [ ] make the sounds overlap a bit
 
