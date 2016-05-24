@@ -20,8 +20,9 @@
 
 test -f $DAEMON || exit 0
 
+su - pi
 cd /home/pi/screamer/
-sudo su pi
+
 
 case "$1" in
     start)
