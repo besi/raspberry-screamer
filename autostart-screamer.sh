@@ -1,5 +1,10 @@
 #!/bin/sh
 #
+# cp ./autostart-screamer.sh /etc/init.d/screamer
+# sudo update-rc.d -f screamer remove
+# sudo update-rc.d screamer defaults
+#
+#
 # init script for screamer
 #
 
@@ -15,18 +20,19 @@
 
 test -f $DAEMON || exit 0
 
+cd /home/pi/screamer/
 case "$1" in
     start)
-        exec su - pi /home/pi/screamer/eventhandler/node_modules/forever/bin/forever start /home/pi/screamer/forever-config.json
+        exec ./eventhandler/node_modules/forever/bin/forever start ./forever-config.json
         ;;
     stop)
-        exec su - pi /home/pi/screamer/eventhandler/node_modules/forever/bin/forever stopall
+        exec ./eventhandler/node_modules/forever/bin/forever stopall
         ;;
     restart)
-        exec su - pi /home/pi/screamer/eventhandler/node_modules/forever/bin/forever restartall
+        exec ./eventhandler/node_modules/forever/bin/forever restartall
         ;;
     status)
-        exec su - pi /home/pi/screamer/eventhandler/node_modules/forever/bin/forever list
+        exec ./eventhandler/node_modules/forever/bin/forever list
         ;;
     *)
         echo "Usage: $0 {start|stop|restart|status}"
