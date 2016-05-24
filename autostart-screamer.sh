@@ -20,22 +20,21 @@
 
 test -f $DAEMON || exit 0
 
-su - pi
 cd /home/pi/screamer/
 
 
 case "$1" in
     start)
-        exec ./eventhandler/node_modules/forever/bin/forever start ./forever-config.json
+        su pi -c "./eventhandler/node_modules/forever/bin/forever start ./forever-config.json"
         ;;
     stop)
-        exec ./eventhandler/node_modules/forever/bin/forever stopall
+        su pi -c "./eventhandler/node_modules/forever/bin/forever stopall"
         ;;
     restart)
-        exec ./eventhandler/node_modules/forever/bin/forever restartall
+        su pi -c "./eventhandler/node_modules/forever/bin/forever restartall"
         ;;
     status)
-        exec ./eventhandler/node_modules/forever/bin/forever list
+        su pi -c "./eventhandler/node_modules/forever/bin/forever list"
         ;;
     *)
         echo "Usage: $0 {start|stop|restart|status}"
