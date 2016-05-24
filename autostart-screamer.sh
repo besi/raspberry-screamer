@@ -21,6 +21,8 @@
 test -f $DAEMON || exit 0
 
 cd /home/pi/screamer/
+sudo su pi
+
 case "$1" in
     start)
         exec ./eventhandler/node_modules/forever/bin/forever start ./forever-config.json
