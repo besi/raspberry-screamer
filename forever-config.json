@@ -3,8 +3,8 @@
     "uid": "watcher",
     "append": true,
     "watch": false,
-    "sourceDir": "./eventhandler",
-    "workingDir": "./eventhandler",
+    "sourceDir": "/home/pi/screamer/eventhandler",
+    "workingDir": "/home/pi/screamer/eventhandler",
     "command": "node",
     "script": "watcher.js",
     "path": "./"
@@ -13,8 +13,8 @@
     "uid": "smsd",
     "append": true,
     "watch": false,
-    "sourceDir": "./",
-    "workingDir": "./",
+    "sourceDir": "/home/pi/screamer",
+    "workingDir": "/home/pi/screamer",
     "command": "bash",
     "script": "./run-sms.sh",
     "path": "./"
