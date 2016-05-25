@@ -27,7 +27,9 @@ test -f $DAEMON || exit 0
 #sudo -iu pi
 
 su - pi
+echo $PATH
 export PATH=/home/pi/.nvm/versions/node/v6.2.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
+echo $PATH
 cd /home/pi/screamer/
 whoami
 pwd
