@@ -40,19 +40,19 @@ nvm current
 case "$1" in
     start)
         #su -c "source /home/pi/.nvm/nvm.sh && cd /home/pi/screamer/ && ./eventhandler/node_modules/forever/bin/forever start ./forever-config.json" - pi
-        ./eventhandler/node_modules/forever/bin/forever start ./forever-config.json
+        sudo -u pi ./eventhandler/node_modules/forever/bin/forever start ./forever-config.json
         ;;
     stop)
         #su -c "source /home/pi/.nvm/nvm.sh && cd /home/pi/screamer/ && ./eventhandler/node_modules/forever/bin/forever stopall" - pi
-        ./eventhandler/node_modules/forever/bin/forever stopall
+        sudo -u pi ./eventhandler/node_modules/forever/bin/forever stopall
         ;;
     restart)
         #su -c "source /home/pi/.nvm/nvm.sh && cd /home/pi/screamer/ && ./eventhandler/node_modules/forever/bin/forever restartall" - pi
-        ./eventhandler/node_modules/forever/bin/forever restartall
+        sudo -u pi ./eventhandler/node_modules/forever/bin/forever restartall
         ;;
     status)
         #su -c "source /home/pi/.nvm/nvm.sh && cd /home/pi/screamer/ && ./eventhandler/node_modules/forever/bin/forever list" - pi
-        ./eventhandler/node_modules/forever/bin/forever list
+        sudo -u pi ./eventhandler/node_modules/forever/bin/forever list
         ;;
     *)
         echo "Usage: $0 {start|stop|restart|status}"
