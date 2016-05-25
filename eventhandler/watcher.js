@@ -338,7 +338,7 @@ function playLetters(letters, cb) {
 			setTimeout(() => {
 				console.log('play', file.file, file.duration);
 				player.play(file.file, (err) => {
-					console.lof('done playing ' , file.file);
+					console.log('done playing ' , file.file);
 					done(err, true);
 				});
 			}, file.delay);
