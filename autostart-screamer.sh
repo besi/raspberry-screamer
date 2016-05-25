@@ -24,23 +24,24 @@ test -f $DAEMON || exit 0
 
 # TODO: it seems to run with the wrong version of node js
 # maybe sudo -u pi 
-sudo -iu pi
+#sudo -iu pi
 cd /home/pi/screamer/
 
-nvm current
+# export PATH=/home/pi/.nvm/versions/node/v6.2.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
+#nvm current
 
 case "$1" in
     start)
-        ./eventhandler/node_modules/forever/bin/forever start ./forever-config.json
+        su - pi -c './eventhandler/node_modules/forever/bin/forever start ./forever-config.json'
         ;;
     stop)
-        ./eventhandler/node_modules/forever/bin/forever stopall
+        su - pi -c './eventhandler/node_modules/forever/bin/forever stopall'
         ;;
     restart)
-        ./eventhandler/node_modules/forever/bin/forever restartall
+        su - pi -c './eventhandler/node_modules/forever/bin/forever restartall'
         ;;
     status)
-        ./eventhandler/node_modules/forever/bin/forever list
+        su - pi -c './eventhandler/node_modules/forever/bin/forever list'
         ;;
     *)
         echo "Usage: $0 {start|stop|restart|status}"
