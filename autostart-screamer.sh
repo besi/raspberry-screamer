@@ -27,27 +27,32 @@ test -f $DAEMON || exit 0
 # maybe sudo -u pi 
 #sudo -iu pi
 
-#su - pi
-#echo $PATH
-#export PATH=/home/pi/.nvm/versions/node/v6.2.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
-#echo $PATH
-#cd /home/pi/screamer/
-#whoami
-#pwd
-#nvm --version
+/bin/su - pi
+source /home/pi/.nvm/nvm.sh
+echo $PATH
+export PATH=/home/pi/.nvm/versions/node/v6.2.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
+echo $PATH
+cd /home/pi/screamer/
+whoami
+pwd
+nvm --version
 
 case "$1" in
     start)
-        su -c "cd /home/pi/screamer/ && ./eventhandler/node_modules/forever/bin/forever start ./forever-config.json" - pi
+        #su -c "source /home/pi/.nvm/nvm.sh && cd /home/pi/screamer/ && ./eventhandler/node_modules/forever/bin/forever start ./forever-config.json" - pi
+        ./eventhandler/node_modules/forever/bin/forever start ./forever-config.json
         ;;
     stop)
-        su -c "cd /home/pi/screamer/ && ./eventhandler/node_modules/forever/bin/forever stopall" - pi
+        #su -c "source /home/pi/.nvm/nvm.sh && cd /home/pi/screamer/ && ./eventhandler/node_modules/forever/bin/forever stopall" - pi
+        ./eventhandler/node_modules/forever/bin/forever stopall
         ;;
     restart)
-        su -c "cd /home/pi/screamer/ && ./eventhandler/node_modules/forever/bin/forever restartall" - pi
+        #su -c "source /home/pi/.nvm/nvm.sh && cd /home/pi/screamer/ && ./eventhandler/node_modules/forever/bin/forever restartall" - pi
+        ./eventhandler/node_modules/forever/bin/forever restartall
         ;;
     status)
-        su -c "cd /home/pi/screamer/ && ./eventhandler/node_modules/forever/bin/forever list" - pi
+        #su -c "source /home/pi/.nvm/nvm.sh && cd /home/pi/screamer/ && ./eventhandler/node_modules/forever/bin/forever list" - pi
+        ./eventhandler/node_modules/forever/bin/forever list
         ;;
     *)
         echo "Usage: $0 {start|stop|restart|status}"
