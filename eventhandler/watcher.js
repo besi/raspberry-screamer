@@ -2,7 +2,7 @@
 
 var fs = require('fs');
 var player = require('play-sound')(opts = {});
-var mp3Duration = require('mp3-duration');
+//var mp3Duration = require('mp3-duration');
 var async = require('async');
 var md5 = require('md5');
 var emoji = require('node-emoji');
@@ -348,25 +348,33 @@ function getFiles(letters, cb) {
 		.map((letter) => {
 			switch (letter) {
 				case 'a':
-					return 'test.mp3';
+					return 'test-pcm-s16le.wav';
 				case 'b':
-					return 'test2.mp3';
+					return 'test-pcm-s16le.wav';
 				case 'c':
-					return 'test3.mp3';
+					return 'test-pcm-s16le.wav';
 				default:
-					return 'test.mp3';
+					return 'test-pcm-s16le.wav';
 			}
 		})
 		.map((file) => {
 			return audioDirectory + file;
+		})
+		.map((path)=>{
+			return {
+				file: path,
+				duration: 1100
+			};
 		});
 
-	async.map(files, (file, done) => {
-		mp3Duration(file, (err, duration) => {
-			done(err, {
-				file: file,
-				duration: duration
-			});
-		});
-	}, cb);
+		cb(null, files);
+
+	//async.map(files, (file, done) => {
+	//	mp3Duration(file, (err, duration) => {
+	//		done(err, {
+	//			file: file,
+	//			duration: duration
+	//		});
+	//	});
+	//}, cb);
 }
