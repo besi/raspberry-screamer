@@ -20,21 +20,25 @@
 
 test -f $DAEMON || exit 0
 
-cd /home/pi/screamer/
 
+
+# TODO: it seems to run with the wrong version of node js
+# maybe sudo -u pi 
+su - pi
+cd /home/pi/screamer/
 
 case "$1" in
     start)
-        su pi -c "./eventhandler/node_modules/forever/bin/forever start ./forever-config.json"
+        ./eventhandler/node_modules/forever/bin/forever start ./forever-config.json
         ;;
     stop)
-        su pi -c "./eventhandler/node_modules/forever/bin/forever stopall"
+        ./eventhandler/node_modules/forever/bin/forever stopall
         ;;
     restart)
-        su pi -c "./eventhandler/node_modules/forever/bin/forever restartall"
+        ./eventhandler/node_modules/forever/bin/forever restartall
         ;;
     status)
-        su pi -c "./eventhandler/node_modules/forever/bin/forever list"
+        ./eventhandler/node_modules/forever/bin/forever list
         ;;
     *)
         echo "Usage: $0 {start|stop|restart|status}"
