@@ -316,9 +316,14 @@ function parseMessage(message, cb) {
 
 function playLetters(letters, cb) {
 
-	var letters = md5(letters).substr(0, 6);
+	// TODO: Chang number of letters to play
+	var letters = md5(letters).substr(0, 2);
+
+	console.log('will play for these md5 letters', letters);
 
 	getFiles(letters, (err, files) => {
+		if (err) throw err;
+
 		var totalDelay = files.map((file) => {
 			file.duration = file.duration * 1000;
 			return file;
@@ -327,9 +332,13 @@ function playLetters(letters, cb) {
 			return delay + file.duration;
 		}, 0);
 
+		console.log('will play files', files);
+
 		async.map(files, (file, done) => {
 			setTimeout(() => {
+				console.log('play', file.file, file.duration);
 				player.play(file.file, (err) => {
+					console.lof('done playing ' , file.file);
 					done(err, true);
 				});
 			}, file.delay);
@@ -366,6 +375,8 @@ function getFiles(letters, cb) {
 				duration: 1100
 			};
 		});
+
+		console.log('found files to play', files);
 
 		cb(null, files);
 
