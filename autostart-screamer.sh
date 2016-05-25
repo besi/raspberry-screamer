@@ -27,6 +27,8 @@ test -f $DAEMON || exit 0
 su - pi
 cd /home/pi/screamer/
 
+echo nvm current
+
 case "$1" in
     start)
         ./eventhandler/node_modules/forever/bin/forever start ./forever-config.json
