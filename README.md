@@ -15,6 +15,7 @@ A Raspberry pi project that plays sounds when someone sends it a SMS.
 `sudo apt-get install smstools`
 `sudo apt-get install alsa-utils`
 `sudo apt-get install avconv`
+`sudo apt-get install sox`
 
 ##### Stuff to do
 add

@@ -18,37 +18,19 @@ var delayMillis = 1000;
 var files = [];
 var r = md5(''+Math.random());
 
-console.log('prepare', r);
-fs.readdir(incomingDirectory, (err, directoryFiles) => {
-	if (err) throw err;
-
-	console.log('found files in directory: ' + directoryFiles);
-
-	directoryFiles
-		.filter((file) => {
-			return file.startsWith('GSM1');
-		})
-		.forEach((filename) => {
+console.log('start watching incoming dir')
+chokidar.watch(incomingDirectory, {persistent: true, usePolling: false, awaitWriteFinish: true, cwd: incomingDirectory})
+		.on('add', (filename)=>{
+			console.log('file touched in incoming dir', filename);
+			if (!filename.startsWith('GSM1')) return;
 			var path = incomingDirectory + '/' + filename;
 			tryToAddFile(path);
 		});
 
-	console.log('start watching incoming dir')
-	chokidar.watch(incomingDirectory, {persistent: true, usePolling: false, awaitWriteFinish: true, cwd: incomingDirectory})
-			.on('add', (filename)=>{
-				console.log('file touched in incoming dir', filename);
-				if (!filename.startsWith('GSM1')) return;
-				var path = incomingDirectory + '/' + filename;
-				tryToAddFile(path);
-			});
-
-	writeStarted();
-});
+writeStarted();
 
 console.log('start screaming');
 waitAndScream();
-
-
 
 function tryToAddFile(path) {
 	console.log('try to add file', path);
