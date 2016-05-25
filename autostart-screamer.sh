@@ -25,23 +25,26 @@ test -f $DAEMON || exit 0
 # TODO: it seems to run with the wrong version of node js
 # maybe sudo -u pi 
 #sudo -iu pi
-cd /home/pi/screamer/
 
-# export PATH=/home/pi/.nvm/versions/node/v6.2.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
-#nvm current
+su - pi
+export PATH=/home/pi/.nvm/versions/node/v6.2.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
+cd /home/pi/screamer/
+whoami
+pwd
+nvm --version
 
 case "$1" in
     start)
-        su - pi -c 'cd /home/pi/screamer/ && ./eventhandler/node_modules/forever/bin/forever start ./forever-config.json'
+        ./eventhandler/node_modules/forever/bin/forever start ./forever-config.json
         ;;
     stop)
-        su - pi -c 'cd /home/pi/screamer/ && ./eventhandler/node_modules/forever/bin/forever stopall'
+        ./eventhandler/node_modules/forever/bin/forever stopall
         ;;
     restart)
-        su - pi -c 'cd /home/pi/screamer/ && ./eventhandler/node_modules/forever/bin/forever restartall'
+        ./eventhandler/node_modules/forever/bin/forever restartall
         ;;
     status)
-        su - pi -c 'cd /home/pi/screamer/ && ./eventhandler/node_modules/forever/bin/forever list'
+        ./eventhandler/node_modules/forever/bin/forever list
         ;;
     *)
         echo "Usage: $0 {start|stop|restart|status}"
