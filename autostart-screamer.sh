@@ -32,16 +32,16 @@ cd /home/pi/screamer/
 
 case "$1" in
     start)
-        su - pi -c './eventhandler/node_modules/forever/bin/forever start ./forever-config.json'
+        su - pi -c 'cd /home/pi/screamer/ && ./eventhandler/node_modules/forever/bin/forever start ./forever-config.json'
         ;;
     stop)
-        su - pi -c './eventhandler/node_modules/forever/bin/forever stopall'
+        su - pi -c 'cd /home/pi/screamer/ && ./eventhandler/node_modules/forever/bin/forever stopall'
         ;;
     restart)
-        su - pi -c './eventhandler/node_modules/forever/bin/forever restartall'
+        su - pi -c 'cd /home/pi/screamer/ && ./eventhandler/node_modules/forever/bin/forever restartall'
         ;;
     status)
-        su - pi -c './eventhandler/node_modules/forever/bin/forever list'
+        su - pi -c 'cd /home/pi/screamer/ && ./eventhandler/node_modules/forever/bin/forever list'
         ;;
     *)
         echo "Usage: $0 {start|stop|restart|status}"
