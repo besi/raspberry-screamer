@@ -324,10 +324,7 @@ function playLetters(letters, cb) {
 	getFiles(letters, (err, files) => {
 		if (err) throw err;
 
-		var totalDelay = files.map((file) => {
-			file.duration = file.duration * 1000;
-			return file;
-		}).reduce((delay, file) => {
+		var totalDelay = files.reduce((delay, file) => {
 			file['delay'] = delay;
 			return delay + file.duration;
 		}, 0);
