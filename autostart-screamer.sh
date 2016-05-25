@@ -10,12 +10,13 @@
 
 ### BEGIN INIT INFO
 # Provides:          screamer
-# Required-Start:    $remote_fs $local_fs $syslog
-# Required-Stop:     $remote_fs $local_fs $syslog
+# Required-Start:    $remote_fs $local_fs $named $syslog
+# Required-Stop:     $remote_fs $local_fs $named $syslog
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # Short-Description: starts the screamer service
 # Description:       Starts the screamer service with forever
+# User: pi
 ### END INIT INFO
 
 test -f $DAEMON || exit 0
@@ -26,27 +27,27 @@ test -f $DAEMON || exit 0
 # maybe sudo -u pi 
 #sudo -iu pi
 
-su - pi
-echo $PATH
-export PATH=/home/pi/.nvm/versions/node/v6.2.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
-echo $PATH
-cd /home/pi/screamer/
-whoami
-pwd
-nvm --version
+#su - pi
+#echo $PATH
+#export PATH=/home/pi/.nvm/versions/node/v6.2.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
+#echo $PATH
+#cd /home/pi/screamer/
+#whoami
+#pwd
+#nvm --version
 
 case "$1" in
     start)
-        ./eventhandler/node_modules/forever/bin/forever start ./forever-config.json
+        su -c "cd /home/pi/screamer/ && ./eventhandler/node_modules/forever/bin/forever start ./forever-config.json" - pi
         ;;
     stop)
-        ./eventhandler/node_modules/forever/bin/forever stopall
+        su -c "cd /home/pi/screamer/ && ./eventhandler/node_modules/forever/bin/forever stopall" - pi
         ;;
     restart)
-        ./eventhandler/node_modules/forever/bin/forever restartall
+        su -c "cd /home/pi/screamer/ && ./eventhandler/node_modules/forever/bin/forever restartall" - pi
         ;;
     status)
-        ./eventhandler/node_modules/forever/bin/forever list
+        su -c "cd /home/pi/screamer/ && ./eventhandler/node_modules/forever/bin/forever list" - pi
         ;;
     *)
         echo "Usage: $0 {start|stop|restart|status}"
