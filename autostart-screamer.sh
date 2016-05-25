@@ -24,10 +24,10 @@ test -f $DAEMON || exit 0
 
 # TODO: it seems to run with the wrong version of node js
 # maybe sudo -u pi 
-su - pi
+sudo -iu pi
 cd /home/pi/screamer/
 
-echo nvm current
+nvm current
 
 case "$1" in
     start)
