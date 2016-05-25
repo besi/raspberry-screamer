@@ -13,6 +13,63 @@ A Raspberry pi project that plays sounds when someone sends it a SMS.
 ###### install 
 `sudo apt-get install libasound2-dev`
 `sudo apt-get install smstools`
+`sudo apt-get install alsa-utils`
+`sudo apt-get install avconv`
+
+##### Stuff to do
+add
+`snd-usb-audio` to `/etc/modules`
+
+update `/etc/modprobe.d/alsa-base.conf` to
+```
+options snd-usb-audio index=0
+options snd_bcm2835 index=1
+```
+
+update `~/.asoundrc` to
+```
+pcm.!default {
+    type hw
+    card 0
+}
+
+ctl.!default {
+    type hw
+    card 0
+}
+```
+
+`lsub` should say
+```
+Bus 001 Device 005: ID 0d8c:000c C-Media Electronics, Inc. Audio Adapter
+Bus 001 Device 004: ID 12d1:1436 Huawei Technologies Co., Ltd. E173 3G Modem (modem-mode)
+Bus 001 Device 003: ID 0bda:8179 Realtek Semiconductor Corp.
+Bus 001 Device 002: ID 1a40:0101 Terminus Technology Inc. 4-Port HUB
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+```
+
+`aplay -l` should say
+```
+**** List of PLAYBACK Hardware Devices ****
+card 0: Set [C-Media USB Headphone Set], device 0: USB Audio [USB Audio]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+card 1: ALSA [bcm2835 ALSA], device 0: bcm2835 ALSA [bcm2835 ALSA]
+  Subdevices: 8/8
+  Subdevice #0: subdevice #0
+  Subdevice #1: subdevice #1
+  Subdevice #2: subdevice #2
+  Subdevice #3: subdevice #3
+  Subdevice #4: subdevice #4
+  Subdevice #5: subdevice #5
+  Subdevice #6: subdevice #6
+  Subdevice #7: subdevice #7
+card 1: ALSA [bcm2835 ALSA], device 1: bcm2835 ALSA [bcm2835 IEC958/HDMI]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+  ```
+
+https://wiki.archlinux.org/index.php/Advanced_Linux_Sound_Architecture/Troubleshooting
 
 ####START
 To start the smsd process
