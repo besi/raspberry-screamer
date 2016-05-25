@@ -317,7 +317,7 @@ function parseMessage(message, cb) {
 function playLetters(letters, cb) {
 
 	// TODO: Chang number of letters to play
-	var letters = md5(letters).substr(0, 2);
+	var letters = md5(letters).substr(0, 3);
 
 	console.log('will play for these md5 letters', letters);
 
@@ -326,7 +326,7 @@ function playLetters(letters, cb) {
 
 		var totalDelay = files.reduce((delay, file) => {
 			file['delay'] = delay;
-			return delay + file.duration;
+			return delay + file.duration + 300;
 		}, 0);
 
 		console.log('will play files', files);
