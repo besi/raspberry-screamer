@@ -26,8 +26,8 @@ test -f $DAEMON || exit 0
 # TODO: it seems to run with the wrong version of node js
 # maybe sudo -u pi 
 #sudo -iu pi
-
-sudo /bin/su - pi
+setuid pi
+sudo /bin/su -l pi
 . /home/pi/.nvm/nvm.sh
 #echo $PATH
 #export PATH=/home/pi/.nvm/versions/node/v6.2.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
