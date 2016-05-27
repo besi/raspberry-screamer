@@ -21,12 +21,11 @@ A Raspberry pi project that plays sounds when someone sends it a SMS.
 ## Audio stuff
 The usb sound card only supports 16 bit signed little endian audio so we need to convert to that.
 
-On the mac install 
+On the mac install
 `brew install vorbis-tools`
 and to convert ogg to wav
-`oggdec --bits 16 --endian=1 --sign=1 -o output.wav input.ogg`
+`oggdec -b 16 -e -s -r -o output.wav input.ogg`
 
-##### Stuff to do
 add
 `snd-usb-audio` to `/etc/modules`
 
