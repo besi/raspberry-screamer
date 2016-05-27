@@ -26,6 +26,9 @@ On the mac install
 and to convert ogg to wav
 `oggdec -b 16 -e -s -r -o output.wav input.ogg`
 
+to do them all
+`ls *.ogg | xargs oggdec -b 16 -e -s -r`
+
 add
 `snd-usb-audio` to `/etc/modules`
 

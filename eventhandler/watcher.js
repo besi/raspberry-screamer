@@ -329,30 +329,51 @@ function playLetters(letters, cb) {
 	});
 }
 
-function getFiles(letters, cb) {
+function getFiles(hexLetters, cb) {
 
-	//TODO: letters can be hex str letters
-	var files = letters.split('')
-		.map((letter) => {
-			switch (letter) {
-				case 'a':
-					return 'test-pcm-s16le.wav';
-				case 'b':
-					return 'test-pcm-s16le.wav';
-				case 'c':
-					return 'test-pcm-s16le.wav';
-				default:
-					return 'test-pcm-s16le.wav';
-			}
+	var lettermap = [{
+				'a': {duration: 2330, file: 'sound001.wav'},
+				'b': {duration: 3180, file: 'sound002.wav'},
+				'c': {duration: 2740, file: 'sound003.wav'},
+				'd': {duration: 3730, file: 'sound004.wav'},
+				'e': {duration: 3000, file: 'sound005.wav'},
+				'f': {duration: 3140, file: 'sound006.wav'},
+				'0': {duration: 2840, file: 'sound007.wav'},
+				'1': {duration: 2790, file: 'sound008.wav'},
+				'2': {duration: 2800, file: 'sound009.wav'},
+				'3': {duration: 3000, file: 'sound010.wav'},
+				'4': {duration: 2430, file: 'sound011.wav'},
+				'5': {duration: 3060, file: 'sound012.wav'},
+				'6': {duration: 2760, file: 'sound013.wav'},
+				'7': {duration: 3150, file: 'sound014.wav'},
+				'8': {duration: 3290, file: 'sound015.wav'},
+				'9': {duration: 3450, file: 'sound016.wav'},
+				},
+				{
+				'a': {duration: 2520, file: 'sound017.wav'},
+				'b': {duration: 2510, file: 'sound018.wav'},
+				'c': {duration: 1860, file: 'sound019.wav'},
+				'd': {duration: 2210, file: 'sound020.wav'},
+				'e': {duration: 2880, file: 'sound021.wav'},
+				'f': {duration: 0320, file: 'sound022.wav'},
+				'0': {duration: 0730, file: 'sound023.wav'},
+				'1': {duration: 0640, file: 'sound024.wav'},
+				'2': {duration: 0740, file: 'sound025.wav'},
+				'3': {duration: 0670, file: 'sound026.wav'},
+				'4': {duration: 0890, file: 'sound027.wav'},
+				'5': {duration: 0880, file: 'sound028.wav'},
+				'6': {duration: 2410, file: 'sound029.wav'},
+				'7': {duration: 1610, file: 'sound030.wav'},
+				'8': {duration: 1610, file: 'sound039.wav'},
+				'9': {duration: 1610, file: 'sound038.wav'}
+				}];
+
+	var files = hexLetters.split('')
+		.map((letter, index) => {
+			return lettermap[index % 2][letter] || lettermap[0][0];
 		})
 		.map((file) => {
-			return audioDirectory + file;
-		})
-		.map((path)=>{
-			return {
-				file: path,
-				duration: 1100
-			};
+			return {file: audioDirectory + file.file, duration: file.duration };
 		});
 
 		console.log('found files to play', files);
