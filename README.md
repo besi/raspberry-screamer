@@ -4,6 +4,7 @@ A Raspberry pi project that plays sounds when someone sends it a SMS.
 - Raspberry Pi Zero 1.2
 - Huawei E169 HSDPA Modem
 - plexgear USB 2.0 hub
+- Goobay model 68878 USB 3D Sound
 
 
 ####SOFTWARE USED
@@ -16,6 +17,14 @@ A Raspberry pi project that plays sounds when someone sends it a SMS.
 `sudo apt-get install alsa-utils`
 `sudo apt-get install avconv`
 `sudo apt-get install sox`
+
+## Audio stuff
+The usb sound card only supports 16 bit signed little endian audio so we need to convert to that.
+
+On the mac install 
+`brew install vorbis-tools`
+and to convert ogg to wav
+`oggdec --bits 16 --endian=1 --sign=1 -o output.wav input.ogg`
 
 ##### Stuff to do
 add
@@ -78,7 +87,6 @@ To start the smsd process
 
 ####NOTES
 - watch out with using usb hubs that are powered. You need to make sure it doesn't backpower since you'll fry your PI. I did.
-- The "Goobay model 68878 USB 3D Sound" does not work with the Pi from my experience.
 
 ####TODO
 
