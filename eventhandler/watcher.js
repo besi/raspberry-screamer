@@ -13,7 +13,7 @@ var outgoingDirectory = __dirname + '/../outgoing';
 var playedDirectory = __dirname + '/../played'
 var statFile = __dirname + '/../stats.json'
 var audioDirectory = __dirname + '/../audio/';
-var delayMillis = 1000;
+var delayMillis = 60000;
 
 var files = [];
 var r = md5(''+Math.random());
@@ -51,7 +51,7 @@ function tryToAddFile(path) {
 
 function waitAndScream() {
 	if (files.length == 0) {
-		console.log('no files. wait')
+		//console.log('no files. wait')
 		return setTimeout(waitAndScream, delayMillis);
 	} else {
 		console.log('some files', files.length)
@@ -73,7 +73,7 @@ function screamFiles() {
 		removeIncomingMessage(incomingFileName, (err) => {
 			if (err) throw err;
 
-			console.log('parse message', content);
+			//console.log('parse message', content);
 			parseMessage(content, (err, message) => {
 				if (err) throw err;
 
@@ -100,21 +100,21 @@ function screamFiles() {
 					throw "crashing now";
 				}
 
-				console.log('parsed', message);
+				//console.log('parsed', message);
 
-				console.log('play letters', message.body);
+				//console.log('play letters', message.body);
 				playLetters(message.body, (err, delay) => {
 
 					if (err) throw err;
-					console.log('send confirmation');
+					//console.log('send confirmation');
 					sendConfirmationMessage(message, (err) => {
 
 						if (err) throw err;
-						console.log('write played file');
+						//console.log('write played file');
 						writePlayedFile(message, (err) => {
 
 							if (err) throw err;
-							console.log('wait until done')
+							//console.log('wait until done')
 							setTimeout(waitAndScream, delay);
 						});
 					});
@@ -301,30 +301,44 @@ function playLetters(letters, cb) {
 	// TODO: Chang number of letters to play
 	var letters = md5(letters).substr(0, 3);
 
-	console.log('will play for these md5 letters', letters);
+	//console.log('will play for these md5 letters', letters);
 
 	getFiles(letters, (err, files) => {
 		if (err) throw err;
 
-		var totalDelay = files.reduce((delay, file) => {
-			file['delay'] = delay;
-			return delay + file.duration + 300;
-		}, 0);
+		//var totalDelay = files.reduce((delay, file) => {
+		//	file['delay'] = delay;
+		//	return delay + file.duration + 300;
+		//}, 0);
 
-		console.log('will play files', files);
+		//console.log('will play files', files);
 
-		async.map(files, (file, done) => {
-			setTimeout(() => {
-				console.log('play', file.file, file.duration);
-				player.play(file.file, (err) => {
-					console.log('done playing ' , file.file);
-					done(err, true);
-				});
-			}, file.delay);
-		}, (err, results) => {
-			console.log('done playing sounds', results, err);
-			cb(err, 0);
-		});
+		var play = function() {
+			if (files.length == 0) return cb(null);
+			//console.log('files to play left', files);
+
+			var file = files.pop();
+			//console.log('play file', file);
+			player.play(file.file, (err) => {
+				if (err) throw err;
+				play();
+			});
+		}
+		//console.log('files to play', files);
+		play();
+
+	//	async.map(files, (file, done) => {
+	//		setTimeout(() => {
+	//			console.log('play', file.file, file.duration);
+	//			player.play(file.file, (err) => {
+	//				//console.log('done playing ' , file.file);
+	//				done(err, true);
+	//			});
+	//		}, file.delay);
+	//	}, (err, results) => {
+	//		//console.log('done playing sounds', results, err);
+	//		cb(err, 0);
+	//	});
 
 	});
 }
@@ -376,7 +390,7 @@ function getFiles(hexLetters, cb) {
 			return {file: audioDirectory + file.file, duration: file.duration };
 		});
 
-		console.log('found files to play', files);
+		//console.log('found files to play', files);
 
 		cb(null, files);
 
