@@ -221,15 +221,27 @@ function getStats(cb) {
 		async.map(files, (file, done) => {
 			fs.readFile(file, (err, content) => {
 				if (err) return done(err);
-				var data = JSON.parse(content);
+				try{
+					var data = JSON.parse(content);
+				}catch (exception){
+					console.log('crashed when reading ', file, exception);
+					return done(null, null);
+				}
 				done(null, data);
+			}
 			});
 		}, (err, messages) => {
 			if (err) return cb(err);
 
 			var numberOfMessages = messages.length;
 
-			var uniqueSenders = messages.map((message) => {
+			// remove messages that could not be parsed
+			messages = messages.filter((val) => {
+				return !!val;
+			});
+
+			var uniqueSenders = messages
+				.map((message) => {
 					return message.from
 				})
 				.filter((value, index, self) => {
