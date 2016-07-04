@@ -10,15 +10,15 @@ var chokidar = require('chokidar');
 
 var incomingDirectory = __dirname + '/../incoming';
 var outgoingDirectory = __dirname + '/../outgoing';
-var playedDirectory = __dirname + '/../played'
-var statFile = __dirname + '/../stats.json'
+var playedDirectory = __dirname + '/../played';
+var statFile = __dirname + '/../stats.json';
 var audioDirectory = __dirname + '/../audio/';
 var delayMillis = 10000;
 
 var files = [];
 var r = md5(''+Math.random());
 
-console.log('start watching incoming dir')
+console.log('start watching incoming dir');
 chokidar.watch(incomingDirectory, {persistent: true, usePolling: false, awaitWriteFinish: true, cwd: incomingDirectory})
 		.on('add', (filename)=>{
 			console.log('file touched in incoming dir', filename);
@@ -221,10 +221,10 @@ function getStats(cb) {
 		async.map(files, (file, done) => {
 			fs.readFile(file, (err, content) => {
 				if (err) return done(err);
-				try{
+				try {
 					var data = JSON.parse(content);
-				}catch (exception){
-					console.log('crashed when reading ', file, exception);
+				} catch (exception) {
+					console.log('crashed when reading', file, exception);
 					return done(null, null);
 				}
 				done(null, data);
@@ -305,7 +305,6 @@ function parseMessage(message, cb) {
 
 function playLetters(letters, cb) {
 
-	// TODO: Chang number of letters to play
 	var letters = md5(letters).substr(0, 3);
 
 	//console.log('will play for these md5 letters', letters);
@@ -376,13 +375,13 @@ function getFiles(hexLetters, cb) {
 				'c': {duration: 1860, file: 'sound019.wav'},
 				'd': {duration: 2210, file: 'sound020.wav'},
 				'e': {duration: 2880, file: 'sound021.wav'},
-				'f': {duration: 0320, file: 'sound022.wav'},
-				'0': {duration: 0730, file: 'sound023.wav'},
-				'1': {duration: 0640, file: 'sound024.wav'},
-				'2': {duration: 0740, file: 'sound025.wav'},
-				'3': {duration: 0670, file: 'sound026.wav'},
-				'4': {duration: 0890, file: 'sound027.wav'},
-				'5': {duration: 0880, file: 'sound028.wav'},
+				'f': {duration:  320, file: 'sound022.wav'},
+				'0': {duration:  730, file: 'sound023.wav'},
+				'1': {duration:  640, file: 'sound024.wav'},
+				'2': {duration:  740, file: 'sound025.wav'},
+				'3': {duration:  670, file: 'sound026.wav'},
+				'4': {duration:  890, file: 'sound027.wav'},
+				'5': {duration:  880, file: 'sound028.wav'},
 				'6': {duration: 2410, file: 'sound029.wav'},
 				'7': {duration: 1610, file: 'sound030.wav'},
 				'8': {duration: 1610, file: 'sound039.wav'},
