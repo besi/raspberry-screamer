@@ -13,7 +13,7 @@ var outgoingDirectory = __dirname + '/../outgoing';
 var playedDirectory = __dirname + '/../played'
 var statFile = __dirname + '/../stats.json'
 var audioDirectory = __dirname + '/../audio/';
-var delayMillis = 60000;
+var delayMillis = 10000;
 
 var files = [];
 var r = md5(''+Math.random());
@@ -103,18 +103,14 @@ function screamFiles() {
 				//console.log('parsed', message);
 
 				//console.log('play letters', message.body);
-				playLetters(message.body, (err, delay) => {
 
-					if (err) throw err;
 					//console.log('send confirmation');
-					sendConfirmationMessage(message, (err) => {
-
+				sendConfirmationMessage(message, (err) => {
+					if (err) throw err;
+					writePlayedFile(message, (err) => {
 						if (err) throw err;
-						//console.log('write played file');
-						writePlayedFile(message, (err) => {
-
+						playLetters(message.body, (err, delay) => {
 							if (err) throw err;
-							//console.log('wait until done')
 							setTimeout(waitAndScream, delay);
 						});
 					});

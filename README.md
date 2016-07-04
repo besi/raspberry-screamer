@@ -17,6 +17,7 @@ A Raspberry pi project that plays sounds when someone sends it a SMS.
 `sudo apt-get install alsa-utils`
 `sudo apt-get install avconv`
 `sudo apt-get install sox`
+`wget http://www.uugear.com/repo/WittyPi/installWittyPi.sh && sudo sh installWittyPi.sh`
 
 ## Audio stuff
 The usb sound card only supports 16 bit signed little endian audio so we need to convert to that.
