@@ -100,18 +100,14 @@ function screamFiles() {
 				}
 
 				if (message.body.toLowerCase() == 'crash') {
-					console.log('crash');
+					console.log('crash by command from sender');
 					throw "crashing now";
 				}
 
-				//console.log('parsed', message);
-
-				//console.log('play letters', message.body);
-
-					//console.log('send confirmation');
+				console.log('send confimration message');
 				sendConfirmationMessage(message, (err) => {
 					if (err) throw err;
-					console.log('send confimration message');
+					console.log('write played file');
 					writePlayedFile(message, (err) => {
 						if (err) throw err;
 						console.log('play letters');
