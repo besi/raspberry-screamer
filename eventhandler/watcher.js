@@ -111,11 +111,14 @@ function screamFiles() {
 					//console.log('send confirmation');
 				sendConfirmationMessage(message, (err) => {
 					if (err) throw err;
+					console.log('send confimration message');
 					writePlayedFile(message, (err) => {
 						if (err) throw err;
-						playLetters(message.body, (err, delay) => {
+						console.log('play letters');
+						playLetters(message.body, (err) => {
 							if (err) throw err;
-							setTimeout(waitAndScream, delay);
+							console.log('delay 1000 and do next');
+							setTimeout(waitAndScream, 1000);
 						});
 					});
 				});
@@ -311,44 +314,19 @@ function playLetters(letters, cb) {
 
 	var letters = md5(letters).substr(0, 3);
 
-	//console.log('will play for these md5 letters', letters);
-
 	getFiles(letters, (err, files) => {
 		if (err) throw err;
 
-		//var totalDelay = files.reduce((delay, file) => {
-		//	file['delay'] = delay;
-		//	return delay + file.duration + 300;
-		//}, 0);
-
-		//console.log('will play files', files);
-
 		var play = function() {
 			if (files.length == 0) return cb(null);
-			//console.log('files to play left', files);
 
 			var file = files.pop();
-			//console.log('play file', file);
 			player.play(file.file, (err) => {
 				if (err) throw err;
 				play();
 			});
 		}
-		//console.log('files to play', files);
 		play();
-
-	//	async.map(files, (file, done) => {
-	//		setTimeout(() => {
-	//			console.log('play', file.file, file.duration);
-	//			player.play(file.file, (err) => {
-	//				//console.log('done playing ' , file.file);
-	//				done(err, true);
-	//			});
-	//		}, file.delay);
-	//	}, (err, results) => {
-	//		//console.log('done playing sounds', results, err);
-	//		cb(err, 0);
-	//	});
 
 	});
 }
