@@ -385,8 +385,8 @@ function getFiles(hexLetters, cb) {
 				'5': {duration:  880, file: 'sound028.wav'},
 				'6': {duration: 2410, file: 'sound029.wav'},
 				'7': {duration: 1610, file: 'sound030.wav'},
-				'8': {duration: 1610, file: 'sound039.wav'},
-				'9': {duration: 1610, file: 'sound038.wav'}
+				'8': {duration: 1610, file: 'sound029.wav'},
+				'9': {duration: 1610, file: 'sound028.wav'}
 				}];
 
 	var files = hexLetters.split('')
