@@ -19,7 +19,7 @@ var delayMillis = 10000;
 var files = [];
 var r = md5(''+Math.random());
 
-consoleStamp(console, '[yyyy-mm-ddTHH:MM:ss.lZ]');
+consoleStamp(console, '[yyyy-mm-dd HH:MM:ss.l]');
 
 
 console.log('start watching incoming dir');
