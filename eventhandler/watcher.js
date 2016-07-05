@@ -7,6 +7,7 @@ var async = require('async');
 var md5 = require('md5');
 var emoji = require('node-emoji');
 var chokidar = require('chokidar');
+var consoleStamp = require('console-stamp')
 
 var incomingDirectory = __dirname + '/../incoming';
 var outgoingDirectory = __dirname + '/../outgoing';
@@ -17,6 +18,9 @@ var delayMillis = 10000;
 
 var files = [];
 var r = md5(''+Math.random());
+
+consoleStamp(console, '[yyyy-mm-ddTHH:MM:ss.lZ]');
+
 
 console.log('start watching incoming dir');
 chokidar.watch(incomingDirectory, {persistent: true, usePolling: false, awaitWriteFinish: true, cwd: incomingDirectory})
