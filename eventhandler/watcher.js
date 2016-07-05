@@ -232,7 +232,6 @@ function getStats(cb) {
 					return done(null, null);
 				}
 				done(null, data);
-			}
 			});
 		}, (err, messages) => {
 			if (err) return cb(err);
