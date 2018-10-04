@@ -1,45 +1,54 @@
 A Raspberry pi project that plays sounds when someone sends it a SMS.
 
-####HARDWARE
+## HARDWARE
 - Raspberry Pi Zero 1.2
 - Huawei E169 HSDPA Modem
 - plexgear USB 2.0 hub
 - Goobay model 68878 USB 3D Sound
 
 
-####SOFTWARE USED
+## SOFTWARE USED
 - nodejs 4.4.4
 - smsd 3.1.15
 
-###### install 
-`sudo apt-get install libasound2-dev`
-`sudo apt-get install smstools`
-`sudo apt-get install alsa-utils`
-`sudo apt-get install avconv`
-`sudo apt-get install sox`
-`wget http://www.uugear.com/repo/WittyPi/installWittyPi.sh && sudo sh installWittyPi.sh`
+## Installation
+
+    sudo apt-get install libasound2-dev
+    sudo apt-get install smstools
+    sudo apt-get install alsa-utils
+    sudo apt-get install avconv
+    sudo apt-get install sox
+    wget http://www.uugear.com/repo/WittyPi/installWittyPi.sh && sudo sh installWittyPi.sh
 
 ## Audio stuff
+
 The usb sound card only supports 16 bit signed little endian audio so we need to convert to that.
 
 On the mac install
-`brew install vorbis-tools`
+
+    brew install vorbis-tools
+    
 and to convert ogg to wav
-`oggdec -b 16 -e -s -r -o output.wav input.ogg`
+
+    oggdec -b 16 -e -s -r -o output.wav input.ogg
 
 to do them all
-`ls *.ogg | xargs oggdec -b 16 -e -s -r`
+ 
+    ls *.ogg | xargs oggdec -b 16 -e -s -r
 
 add
+
 `snd-usb-audio` to `/etc/modules`
 
 update `/etc/modprobe.d/alsa-base.conf` to
+
 ```
 options snd-usb-audio index=0
 options snd_bcm2835 index=1
 ```
 
 update `~/.asoundrc` to
+
 ```
 pcm.!default {
     type hw
@@ -53,6 +62,7 @@ ctl.!default {
 ```
 
 `lsub` should say
+
 ```
 Bus 001 Device 005: ID 0d8c:000c C-Media Electronics, Inc. Audio Adapter
 Bus 001 Device 004: ID 12d1:1436 Huawei Technologies Co., Ltd. E173 3G Modem (modem-mode)
@@ -62,6 +72,7 @@ Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
 ```
 
 `aplay -l` should say
+
 ```
 **** List of PLAYBACK Hardware Devices ****
 card 0: Set [C-Media USB Headphone Set], device 0: USB Audio [USB Audio]
@@ -80,18 +91,19 @@ card 1: ALSA [bcm2835 ALSA], device 0: bcm2835 ALSA [bcm2835 ALSA]
 card 1: ALSA [bcm2835 ALSA], device 1: bcm2835 ALSA [bcm2835 IEC958/HDMI]
   Subdevices: 1/1
   Subdevice #0: subdevice #0
-  ```
+```
 
 https://wiki.archlinux.org/index.php/Advanced_Linux_Sound_Architecture/Troubleshooting
 
-####START
+## START
 To start the smsd process
-`./start.sh`
 
-####NOTES
+    ./start.sh
+
+## NOTES
 - watch out with using usb hubs that are powered. You need to make sure it doesn't backpower since you'll fry your PI. I did.
 
-####TODO
+## TODO
 
 - [ ] make polling for messages less frequent
 - [ ] Make logging less verbose
@@ -101,4 +113,3 @@ To start the smsd process
 - [X] return a confirmation when a message has been received
 - [ ] update with proper sounds
 - [ ] make the sounds overlap a bit
-
